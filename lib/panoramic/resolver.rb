@@ -1,7 +1,14 @@
 module Panoramic
   class Resolver < ActionView::Resolver
-    #require "singleton"
-    #include Singleton
+    require "singleton"
+    include Singleton
+
+    # if `cached` is called, multi-tenancy will be broken because another tenant's view is referenced via cache.
+    def find_all(name, prefix=nil, partial=false, details={}, key=nil, locals=[])
+      #cached(key, [name, prefix, partial], details, locals) do
+        find_templates(name, prefix, partial, details)
+      #end
+    end
 
     # this method is mandatory to implement a Resolver
     def find_templates(name, prefix, partial, details)
@@ -24,7 +31,12 @@ module Panoramic
     def self.using(model, options={})
       @@model = model
       @@resolver_options = options
-      self.new
+      self.instance
+      # http://stackoverflow.com/questions/6391855/rails-cache-error-in-rails-3-1-typeerror-cant-dump-hash-with-default-proc
+      # for multi-tenancy, it needs multiple instance.
+      #Rails.cache.fetch(options[:cache_key]) do
+        #self.new
+      #end
     end
 
     private
