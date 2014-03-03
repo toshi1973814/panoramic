@@ -1,7 +1,7 @@
 module Panoramic
   class Resolver < ActionView::Resolver
-    require "singleton"
-    include Singleton
+    #require "singleton"
+    #include Singleton
 
     # this method is mandatory to implement a Resolver
     def find_templates(name, prefix, partial, details)
@@ -53,7 +53,7 @@ module Panoramic
     def normalize_array(array)
       array.map(&:to_s)
     end
-    
+
     # returns a path depending if its a partial or template
     def virtual_path(path, partial)
       return path unless partial
