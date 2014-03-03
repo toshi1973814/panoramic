@@ -4,9 +4,9 @@ Gem::Specification.new do |s|
   s.name        = "panoramic"
   s.version     ='0.0.5'
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Andrea Pavoni"]
-  s.email       = ["andrea.pavoni@gmail.com"]
-  s.homepage    = "http://github.com/apeacox/panoramic"
+  s.authors     = ["Toshiyuki Yasuda"]
+  s.email       = ["toshi1973814@gmail.com"]
+  s.homepage    = "http://github.com/toshi1973814/panoramic"
   s.summary     = %q{Stores rails views on database}
   s.description = %q{Stores rails views on database}
 
