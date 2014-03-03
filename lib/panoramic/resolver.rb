@@ -3,10 +3,18 @@ module Panoramic
     require "singleton"
     include Singleton
 
+    def sql_template_partials=(partials)
+      @sql_template_partials = partials
+    end
+
     # if `cached` is called, multi-tenancy will be broken because another tenant's view is referenced via cache.
     def find_all(name, prefix=nil, partial=false, details={}, key=nil, locals=[])
+      return [] unless @sql_template_partials.include? "#{prefix}/#{name}/#{partial ? "partial" : "non_partial"}"
+      # key is ctionView::LookupContext::DetailsKey, so string can not be added to it.
+      #key = "#{key}.Thread.current[:domain]"
       #cached(key, [name, prefix, partial], details, locals) do
-        find_templates(name, prefix, partial, details)
+      #return [] unless @sql_template_partials.include? "#{prefix}/#{name}/#{partial ? "partial" : "non_partial"}"
+      find_templates(name, prefix, partial, details)
       #end
     end
 
