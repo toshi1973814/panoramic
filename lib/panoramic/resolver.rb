@@ -1,18 +1,14 @@
 module Panoramic
-  class Resolver < ActionView::Resolver
-    require "singleton"
-    include Singleton
+  class Resolver
 
-    def sql_template_partials=(partials)
-      @sql_template_partials = partials
+    def self.sql_template_partials=(partials)
+      @@sql_template_partials = partials
     end
 
     # if `cached` is called, multi-tenancy will be broken because another tenant's view is referenced via cache.
     def find_all(name, prefix=nil, partial=false, details={}, key=nil, locals=[])
-      return [] unless @sql_template_partials.include? "#{prefix}/#{name}/#{partial ? "partial" : "non_partial"}"
-      #cached(key, [name, prefix, partial], details, locals) do
+      return [] unless @@sql_template_partials.include? "#{prefix}/#{name}/#{partial ? "partial" : "non_partial"}"
       find_templates(name, prefix, partial, details)
-      #end
     end
 
     # this method is mandatory to implement a Resolver
@@ -36,7 +32,7 @@ module Panoramic
     def self.using(model, options={})
       @@model = model
       @@resolver_options = options
-      self.instance
+      self.new
     end
 
     private
